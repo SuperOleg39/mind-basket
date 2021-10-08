@@ -1,0 +1,17 @@
+{
+    "name": "mind-basket",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "prettier": "prettier --write ."
+    },
+    "devDependencies": {
+        "prettier": "2.3.2",
+        "typescript": "4.4.2"
+    },
+    "workspaces": [
+        "apps/*",
+        "libs/*",
+        "tools/*"
+    ]
+}

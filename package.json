@@ -3,7 +3,8 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "prettier": "prettier --write ."
+        "prettier": "prettier --write .",
+        "start:front": "npm run start -w apps/frontend"
     },
     "devDependencies": {
         "prettier": "2.3.2",

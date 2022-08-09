@@ -11,6 +11,11 @@ const routes = [
 		component: MainPage,
 	},
 	{
+		exact: true,
+		path: '/documents/',
+		component: MainPage,
+	},
+	{
 		path: '/documents/:id',
 		component: DocumentPage,
 	},

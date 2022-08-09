@@ -1,7 +1,7 @@
 import { useStore } from 'effector-react';
 import { useParams } from 'react-router';
 import { Workspace } from '../features/workspace';
-import { Editor } from '../features/editor/ui/editor';
+import { Editor } from '../widgets/editor/ui/editor';
 import { $documentsList } from '../entities/document/model/document';
 import { Layout } from '../shared/ui/layout/layout';
 import { $blocks } from '../entities/block/model/block';

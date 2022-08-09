@@ -1,4 +1,4 @@
-import { useEvent } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import { Block } from '../../../entities/block/model/block';
 import { Document } from '../../../entities/document/model/document';
 import { Widget } from '../../../features/widget';
@@ -6,6 +6,9 @@ import {
 	titleChangedEvent,
 	lineChangedEvent,
 	newLineEvent,
+	deleteLineEvent,
+	blockFocusedEvent,
+	$focusedBlock,
 } from '../model/editor';
 
 export const Editor = ({
@@ -15,10 +18,20 @@ export const Editor = ({
 	document: Document;
 	blocks: Record<string, Block>;
 }) => {
-	const [handleTitleChange, handleLineChange, handleNewLine] = useEvent([
+	const focusedBlockId = useStore($focusedBlock);
+
+	const [
+		handleTitleChange,
+		handleLineChange,
+		handleNewLine,
+		handleDeleteLine,
+		handleFocus,
+	] = useEvent([
 		titleChangedEvent,
 		lineChangedEvent,
 		newLineEvent,
+		deleteLineEvent,
+		blockFocusedEvent,
 	]);
 
 	return (
@@ -31,8 +44,12 @@ export const Editor = ({
 					type: 'title',
 					content: document.title,
 				}}
+				focused={document.id === focusedBlockId}
 				onChange={handleTitleChange}
 				onNewLine={handleNewLine}
+				onDeleteLine={handleDeleteLine}
+				onFocus={() => handleFocus(document.id)}
+				onBlur={() => handleFocus(null)}
 			/>
 			{document.blocks.map((block) =>
 				blocks[block] ? (
@@ -40,8 +57,12 @@ export const Editor = ({
 						document={document}
 						key={blocks[block].id}
 						block={blocks[block]}
+						focused={block === focusedBlockId}
 						onChange={handleLineChange}
 						onNewLine={handleNewLine}
+						onDeleteLine={handleDeleteLine}
+						onFocus={() => handleFocus(block)}
+						onBlur={() => handleFocus(null)}
 					/>
 				) : (
 					false

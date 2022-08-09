@@ -60,8 +60,12 @@ export const navigateToDocumentFx = createEffect(
 );
 
 export const newDocumentCreated = createEvent<UniqueId>();
-export const documentTitleChanged = createEvent<{ id: UniqueId, title: string }>();
-export const documentBlockAdded = createEvent<{ id: UniqueId, position: number, block: Block }>();
+export const documentTitleChanged =
+	createEvent<{ id: UniqueId; title: string }>();
+export const documentBlockAdded =
+	createEvent<{ id: UniqueId; position: number; block: Block }>();
+export const documentBlockDeleted =
+	createEvent<{ id: UniqueId; position: number }>();
 
 export const $documentsList = createStore<Record<UniqueId, Document>>({})
 	.on(loadAllDocumentsFx.doneData, (documentsList, documentsArray) => {
@@ -94,7 +98,7 @@ export const $documentsList = createStore<Record<UniqueId, Document>>({})
 	.on(documentBlockAdded, (documentsList, { id, position, block }) => {
 		const nextBlocks = [...documentsList[id].blocks];
 
-		nextBlocks.splice(position, 0, block.id)
+		nextBlocks.splice(position, 0, block.id);
 
 		return {
 			...documentsList,
@@ -102,5 +106,18 @@ export const $documentsList = createStore<Record<UniqueId, Document>>({})
 				...documentsList[id],
 				blocks: nextBlocks,
 			},
-		}
+		};
+	})
+	.on(documentBlockDeleted, (documentsList, { id, position }) => {
+		const nextBlocks = [...documentsList[id].blocks];
+
+		nextBlocks.splice(position, 1);
+
+		return {
+			...documentsList,
+			[id]: {
+				...documentsList[id],
+				blocks: nextBlocks,
+			},
+		};
 	});

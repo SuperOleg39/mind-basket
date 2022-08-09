@@ -6,8 +6,12 @@ import { TitleWidget } from './title-widget';
 export interface WidgetProps {
 	document: Document;
 	block: Block;
+	focused?: boolean;
 	onChange: (params: { block: Block; document: Document }) => void;
 	onNewLine: (params: { block: Block; document: Document }) => void;
+	onDeleteLine: (params: { block: Block; document: Document }) => void;
+	onFocus: (params: { block: Block; document: Document }) => void;
+	onBlur: (params: { block: Block; document: Document }) => void;
 }
 
 const widgetsMap = {

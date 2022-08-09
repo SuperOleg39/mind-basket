@@ -1,18 +1,32 @@
-import { createEffect, createEvent, sample } from 'effector';
+import { createEffect, createEvent, createStore, sample } from 'effector';
 import {
 	Block,
 	blockAdded,
 	blockContentChanged,
+	blockDeleted,
 	createBlock,
 } from '../../../entities/block/model/block';
 import {
 	Document,
 	documentBlockAdded,
+	documentBlockDeleted,
 	documentTitleChanged,
 } from '../../../entities/document/model/document';
 import { createUniqueId } from '../../../shared/lib/unique-id';
 
+export const blockFocusedEvent = createEvent<UniqueId | null>();
+
+export const $focusedBlock = createStore<UniqueId | null>(null).on(
+	blockFocusedEvent,
+	(_, id) => id
+);
+
 export const newLineEvent = createEvent<{
+	document: Document | null;
+	block: Block;
+}>();
+
+export const deleteLineEvent = createEvent<{
 	document: Document | null;
 	block: Block;
 }>();
@@ -54,15 +68,44 @@ export const newLineFx = createEffect(
 
 		blockAdded(nextBlock);
 		documentBlockAdded({ position, id: document.id, block: nextBlock });
+		blockFocusedEvent(nextBlock.id);
 	}
 );
 
-// @todo move to init.ts
+export const deleteLineFx = createEffect(
+	async ({
+		document,
+		block,
+	}: {
+		document: Document | null;
+		block: Block;
+	}) => {
+		if (!document || block.type === 'title') {
+			return;
+		}
+
+		const position = document.blocks.indexOf(block.id);
+
+		documentBlockDeleted({ position, id: document.id });
+		blockDeleted(block);
+		blockFocusedEvent(
+			position > 0 ? document.blocks[position - 1] : document.id
+		);
+	}
+);
+
+// @todo move to init.ts?
 
 sample({
 	clock: newLineEvent,
 	fn: ({ document, block }) => ({ document, block }),
 	target: newLineFx,
+});
+
+sample({
+	clock: deleteLineEvent,
+	fn: ({ document, block }) => ({ document, block }),
+	target: deleteLineFx,
 });
 
 sample({

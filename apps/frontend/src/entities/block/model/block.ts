@@ -23,6 +23,7 @@ export const createBlock = ({
 };
 
 export const blockAdded = createEvent<Block>();
+export const blockDeleted = createEvent<Block>();
 export const blockContentChanged = createEvent<Block>();
 
 export const $blocks = createStore<{ [key: UniqueId]: Block }>({})
@@ -31,6 +32,20 @@ export const $blocks = createStore<{ [key: UniqueId]: Block }>({})
 			...state,
 			[block.id]: { ...block },
 		};
+	})
+	.on(blockDeleted, (state, block) => {
+		if (!state[block.id]) {
+			return state;
+		}
+
+		const nextState = {
+			...state,
+			[block.id]: { ...block },
+		};
+
+		delete nextState[block.id];
+
+		return nextState;
 	})
 	.on(blockContentChanged, (state, block) => {
 		return {

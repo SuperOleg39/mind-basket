@@ -9,13 +9,18 @@ export const TextWidget = ({
 	document,
 	block,
 	tag,
+	focused,
 	onChange,
 	onNewLine,
+	onDeleteLine,
+	onFocus,
+	onBlur,
 }: TextWidgetProps) => {
 	return (
 		<ContentEditable
 			tag={tag}
 			content={block.content}
+			focused={focused}
 			onInput={(e) => {
 				onChange({
 					document,
@@ -30,7 +35,20 @@ export const TextWidget = ({
 				if (e.code === 'Enter' && !e.shiftKey) {
 					onNewLine({ document, block });
 					e.preventDefault();
+				} else if (
+					e.code === 'Backspace' &&
+					!e.shiftKey &&
+					e.currentTarget.innerText.length === 0
+				) {
+					onDeleteLine({ document, block });
+					e.preventDefault();
 				}
+			}}
+			onFocus={(e) => {
+				onFocus({ document, block });
+			}}
+			onBlur={(e) => {
+				onBlur({ document, block });
 			}}
 		/>
 	);

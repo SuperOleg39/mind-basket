@@ -3,17 +3,23 @@ import { useEffect, useRef, ReactNode } from 'react';
 type ContentEditableProps = {
 	tag?: string;
 	content: string;
+	focused?: boolean;
 	children?: ReactNode;
 } & JSX.IntrinsicElements['div'];
 
 export const ContentEditable = ({
 	tag: Wrapper = 'div',
 	content,
+	focused,
 	...props
 }: ContentEditableProps) => {
 	const wrapperRef = useRef<HTMLDivElement>();
 
 	useEffect(() => {
+		if (typeof focused === 'boolean' && !focused) {
+			return;
+		}
+
 		const selection = window.getSelection();
 		const range = window.document.createRange();
 
@@ -24,7 +30,7 @@ export const ContentEditable = ({
 			selection.addRange(range);
 			wrapperRef.current.focus();
 		}
-	}, [content]);
+	}, [content, focused]);
 
 	return (
 		<Wrapper

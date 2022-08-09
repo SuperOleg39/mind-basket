@@ -1,4 +1,3 @@
-import React from 'react';
 import { useStore } from 'effector-react';
 import { useParams } from 'react-router';
 import { Workspace } from '../features/workspace';

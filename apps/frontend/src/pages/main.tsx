@@ -1,4 +1,3 @@
-import React from 'react';
 import { Workspace } from '../features/workspace';
 import { Layout } from '../shared/ui/layout/layout';
 

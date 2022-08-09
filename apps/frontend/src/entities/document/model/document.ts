@@ -1,7 +1,7 @@
 import { createStore, createEffect, createEvent } from 'effector';
 import { History } from 'history';
 import { ApiService } from '../../../shared/api';
-import { createUniqueId } from '../../../shared/unique-id';
+import { createUniqueId } from '../../../shared/lib/unique-id';
 import { Block } from '../../block/model/block';
 
 export type Document = {

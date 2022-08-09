@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Switch, Route } from 'react-router';
-import { history } from '../shared/history';
+import { history } from '../shared/lib/history';
 import { DocumentPage } from '../pages/document';
 import { MainPage } from '../pages/main';
 

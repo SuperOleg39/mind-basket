@@ -38,7 +38,7 @@ export const Line = ({
 						onChange({
 							id: block.id,
 							type: block.type,
-							content: e.currentTarget.innerHTML,
+							content: e.currentTarget.innerText,
 						});
 					}}
 					onKeyDown={(e) => {

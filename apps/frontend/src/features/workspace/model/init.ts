@@ -9,7 +9,7 @@ import {
     workspaceInitialized,
     createDocumentButtonPressed,
 } from './workspace';
-import { history } from '../../../shared/history';
+import { history } from '../../../shared/lib/history';
 
 function sleep(ms: number) {
     return new Promise((resolve) => {

@@ -11,7 +11,7 @@ import {
 	documentBlockAdded,
 	documentTitleChanged,
 } from '../../../entities/document/model/document';
-import { createUniqueId } from '../../../shared/unique-id';
+import { createUniqueId } from '../../../shared/lib/unique-id';
 import { Line } from './line';
 
 export const Editor = ({

@@ -1,4 +1,5 @@
 import { useEvent, useStore } from 'effector-react';
+import { useEffect } from 'react';
 import { Block } from '../../../entities/block/model/block';
 import { Document } from '../../../entities/document/model/document';
 import { Widget } from '../../../features/widget';
@@ -10,6 +11,7 @@ import {
 	blockFocusedEvent,
 	$focusedBlock,
 } from '../model/editor';
+import { undoEvent } from '../model/local-history';
 
 export const Editor = ({
 	document,
@@ -26,13 +28,28 @@ export const Editor = ({
 		handleNewLine,
 		handleDeleteLine,
 		handleFocus,
+		handleUndo,
 	] = useEvent([
 		titleChangedEvent,
 		lineChangedEvent,
 		newLineEvent,
 		deleteLineEvent,
 		blockFocusedEvent,
+		undoEvent,
 	]);
+
+	useEffect(() => {
+		const callback = (event: KeyboardEvent) => {
+			if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
+				event.preventDefault();
+				handleUndo({ document });
+			}
+		};
+
+		window.document.addEventListener('keydown', callback);
+
+		return () => window.document.removeEventListener('keydown', callback);
+	}, [handleUndo, document]);
 
 	return (
 		<>

@@ -86,7 +86,7 @@ export const deleteLineFx = createEffect(
 
 		const position = document.blocks.indexOf(block.id);
 
-		documentBlockDeleted({ position, id: document.id });
+		documentBlockDeleted({ position, id: document.id, block });
 		blockDeleted(block);
 		blockFocusedEvent(
 			position > 0 ? document.blocks[position - 1] : document.id

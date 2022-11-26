@@ -65,7 +65,7 @@ export const documentTitleChanged =
 export const documentBlockAdded =
 	createEvent<{ id: UniqueId; position: number; block: Block }>();
 export const documentBlockDeleted =
-	createEvent<{ id: UniqueId; position: number }>();
+	createEvent<{ id: UniqueId; position: number; block: Block }>();
 
 export const $documentsList = createStore<Record<UniqueId, Document>>({})
 	.on(loadAllDocumentsFx.doneData, (documentsList, documentsArray) => {
